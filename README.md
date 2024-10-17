@@ -15,7 +15,7 @@ Git
 
 ### Installation instruction
 ```
-
+Git clone https://github.com/ianimbuga/code-challenge-1.git
 
 ```
 
