@@ -1,17 +1,21 @@
-function speedDetector(speed) {
-    const speedLimit = 70;
+const speedLimit = 70;
 
-    if (speed < speedLimit) {
-        console.log("Ok")
-    } else {
-        const speedDemeritPoint = 5
-        const demeritPoints = Math.floor((speed - speedLimit) / speedDemeritPoint);
+function speedDetector(speed){
+if(speed < 70){
+console.log("ok");
 
-        if (demeritPoints > 12) {
-            console.log("License Suspended")
-        } else {
-            console.log("Points: " + demeritPoints);
-        }
-    }
+}else{
+const demeritPoints = Math.floor((speed - speedLimit)/5);
+console.log(`points: ${demeritPoints}`);
+
+if(demeritPoints > 12){
+    console.log("License suspended");
+
 }
-console.log(speedDetector(100))
+
+}
+}
+
+speedDetector(40);
+speedDetector(90);
+speedDetector(140);

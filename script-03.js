@@ -1,10 +1,12 @@
-
+const readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
 function calculatePAYE(grossSalary) {
     let personalRelief = 2400;
     let paye = 0;
-
-   
     if (grossSalary <= 24000) {
         paye = grossSalary * 0.10;
     } else if (grossSalary <= 32333) {
@@ -16,8 +18,6 @@ function calculatePAYE(grossSalary) {
     } else {
         paye = (24000 * 0.10) + (8333 * 0.25) + (467667 * 0.30) + (300000 * 0.325) + (grossSalary - 800000) * 0.35;
     }
-
-   
     paye = Math.max(paye - personalRelief, 0);
     return paye;
 }
@@ -42,7 +42,6 @@ function calculateNHIF(grossSalary) {
     return 1700;
 }
 
-
 function calculateNSSF(grossSalary) {
     let tier1 = Math.min(grossSalary, 6000) * 0.06;
     let tier2 = Math.max(0, Math.min(grossSalary - 6000, 12000)) * 0.06;
@@ -51,25 +50,31 @@ function calculateNSSF(grossSalary) {
 
 function calculateNetSalary(basicSalary, benefits) {
     let grossSalary = basicSalary + benefits;
-
-    
     let paye = calculatePAYE(grossSalary);
     let nhif = calculateNHIF(grossSalary);
     let nssf = calculateNSSF(grossSalary);
-
-    
     let netSalary = grossSalary - (paye + nhif + nssf);
-
- 
-    console.log('Gross Salary: Ksh ${grossSalary.toFixed(2)}');
-    console.log('PAYE (Tax): Ksh ${paye.toFixed(2)}');
-    console.log('NHIF Deduction: Ksh ${nhif.toFixed(2)}');
-    console.log('NSSF Deduction: Ksh ${nssf.toFixed(2)}');
-    console.log('Net Salary: Ksh ${netSalary.toFixed(2)}');
+    console.log(`Gross Salary: Ksh ${grossSalary.toFixed(2)}`);
+    console.log(`PAYE (Tax): Ksh ${paye.toFixed(2)}`);
+    console.log(`NHIF Deduction: Ksh ${nhif.toFixed(2)}`);
+    console.log(`NSSF Deduction: Ksh ${nssf.toFixed(2)}`);
+    console.log(`Net Salary: Ksh ${netSalary.toFixed(2)}`);
 }
 
+function getInput() {
+    rl.question("Enter basic salary (Ksh): ", (basicSalary) => {
+        rl.question("Enter benefits (Ksh): ", (benefits) => {
+            basicSalary = parseFloat(basicSalary);
+            benefits = parseFloat(benefits);
 
-let basicSalary = parseFloat(prompt("Enter basic salary (Ksh): "));
-let benefits = parseFloat(prompt("Enter benefits (Ksh): "));
+            if (isNaN(basicSalary) || isNaN(benefits) || basicSalary < 0 || benefits < 0) {
+                console.error("Please enter valid non-negative numbers for salary and benefits.");
+            } else {
+                 calculateNetSalary(basicSalary, benefits);
+            }
+            rl.close();
+        });
+    });
 
-calculateNetSalary(basicSalary, benefits);
+}
+getInput();
